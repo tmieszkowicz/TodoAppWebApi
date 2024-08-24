@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -13,6 +14,8 @@ builder.Services.AddAuthorization(opts =>
     .RequireAuthenticatedUser()
     .Build();
 });
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("Default"));
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(opts =>
     {
@@ -42,5 +45,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/health").AllowAnonymous();
 
 app.Run();
