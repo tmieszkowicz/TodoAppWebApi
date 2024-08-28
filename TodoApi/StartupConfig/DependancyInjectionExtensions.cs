@@ -28,12 +28,6 @@ public static class DependancyInjectionExtensions
 
     public static void AddAuthServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddAuthorization(opts =>
-        {
-            opts.FallbackPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
-        });
         builder.Services.AddAuthentication("Bearer")
             .AddJwtBearer(opts =>
             {
@@ -47,5 +41,12 @@ public static class DependancyInjectionExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Authentication:SecretKey")))
                 };
             });
+
+        builder.Services.AddAuthorization(opts =>
+        {
+            opts.FallbackPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+        });
     }
 }

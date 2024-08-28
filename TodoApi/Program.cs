@@ -2,12 +2,12 @@ using TodoApi.StartupConfig;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var app = builder.Build();
-
 builder.AddStandardServices();
 builder.AddAuthServices();
 builder.AddHealthCheckServices();
 builder.AddCustomServices();
+
+var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
